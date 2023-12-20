@@ -25,16 +25,23 @@ class Todo {
     }
   }
 
-  update(index, updatedTodo){
-    this.todos.splice(index, 1, updatedTodo);
+  update(index, updatedTodo) {
+    if (index < this.todos.length) { this.todos.splice(index, 1, updatedTodo); }
   }
 
-  getAll(){
+  getAll() {
     return this.todos;
   }
 
-  get(indexOfTodo){
-    
+  get(indexOfTodo) {
+    if (indexOfTodo < this.todos.length) { return this.todos[indexOfTodo]; }
+    else {
+      return null;
+    }
+  }
+
+  clear() {
+    this.todos = [];
   }
 }
 
