@@ -7,8 +7,27 @@
 
 //  - HH:MM::SS AM/PM (Eg 01:45:23 PM)
 
-setInterval(() => {
-    let date = new Date();
-    console.clear()
-    console.log(`${date.getHours()}:${date.getMinutes()}::${date.getSeconds()}`);
-}, 1000)
+function get12hrs() {
+    setInterval(() => {
+        let date = new Date();
+        console.clear();
+        let ampm = date.getHours() < 12 ? "AM" : "PM";
+        let hours = date.getHours() % 12;
+        hours = hours === 0 ? 12 : hours;
+        console.log(`${formatDigit(hours)}:${formatDigit(date.getMinutes())}::${formatDigit(date.getSeconds())} ${ampm}`);
+    }, 1000);
+}
+
+function get24hrs() {
+    setInterval(() => {
+        let date = new Date();
+        console.clear();
+        console.log(`${formatDigit(date.getHours())}:${formatDigit(date.getMinutes())}::${formatDigit(date.getSeconds())}`);
+    }, 1000);
+}
+
+function formatDigit(digit) {
+    return digit < 10 ? `0${digit}` : digit;
+}
+// get12hrs()
+// get24hrs();
