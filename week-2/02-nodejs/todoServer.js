@@ -39,11 +39,54 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  
-  const app = express();
-  
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+let idToAdd = 0;
+let todos = [];
+
+app.use(bodyParser.json());
+
+app.get('/todos', (req, res) => {
+  res.json(todos);
+})
+
+app.get('todos/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  for (let i of todos) {
+    if (i.id === id) {
+      res.json(i);
+      return;
+    }
+  }
+  res.status(404).send("404 Not Found");
+})
+
+app.post('/todos', (req, res) => {
+  const newTodo = {
+    id: idToAdd++,
+    title: req.body.title,
+    completed: false,
+    description: req.body.description,
+  }
+  todos.push(newTodo);
+  res.status(201).json(newTodo);
+})
+
+app.put('todos/:id', (req, res) => {
+  const id = req.params.id;
+  const todoToUpdate = todos.find(t => t.id === id);
+  if (todoToUpdate) {
+    todoToUpdate.completed = req.body.completed || false;
+    todoToUpdate.title = req.body.title || todoToUpdate.title;
+    res.send();
+    return;
+  }
+  res.status(404).send("404 Not Found");
+})
+
+
+
+module.exports = app;
